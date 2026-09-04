@@ -799,19 +799,6 @@
     const shown = Math.min(timeProgress, Math.max(assetProgress, timeProgress * 0.7));
     fill.style.width = shown + '%';
     pct.textContent = Math.round(shown) + '%';
-
-    if(elapsed < MIN_DURATION || loaded < assets.length){
-      requestAnimationFrame(tick);
-    } else {
-      fill.style.width = '100%';
-      pct.textContent = '100%';
-      clearInterval(msgTimer);
-      setTimeout(() => {
-        preloader.classList.add('hide');
-        page.classList.add('reveal');
-        setTimeout(() => createConfetti(70), 400);
-      }, 350);
-    }
   }
   requestAnimationFrame(tick);
 })();
