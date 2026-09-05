@@ -450,6 +450,23 @@
   .music-control:hover{ transform:scale(1.08); }
 
   /* =========================================================
+     PRINT BUTTON
+  ========================================================= */
+  .print-control{
+    position:fixed; left:22px; bottom:22px;
+    display:inline-flex; align-items:center; gap:8px;
+    height:54px; padding:0 20px; border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--white); color:var(--rose);
+    cursor:pointer; font-family:'Inter', sans-serif;
+    font-size:.9rem; font-weight:600;
+    z-index:100; box-shadow:var(--shadow-tight);
+    transition: transform .25s var(--ease), background .25s ease;
+  }
+
+  .print-control:hover{ transform:scale(1.05); background:var(--blush-soft); }
+
+  /* =========================================================
      CONFETTI
   ========================================================= */
   .confetti{
@@ -479,6 +496,43 @@
     .letter-wrap{ padding:40px 26px; }
     .btn{ width:100%; justify-content:center; }
     .surprise{ padding:56px 20px; border-radius:20px; }
+  }
+
+  /* =========================================================
+     PRINT
+  ========================================================= */
+  @media print{
+    .petal-field, .music-control, .print-control{ display:none !important; }
+
+    body{ background:var(--white); }
+
+    section{ padding:26px 0; }
+
+    .hero{ min-height:auto; padding-top:20px; }
+
+    .btn-row{ display:none; }
+
+    .polaroid{
+      box-shadow:none; border:1px solid var(--line);
+      animation:none; transform:rotate(0deg);
+      break-inside:avoid;
+    }
+
+    .gallery-strip figure{
+      box-shadow:none; border:1px solid var(--line);
+      transform:none !important;
+      break-inside:avoid;
+    }
+
+    .letter-wrap{ box-shadow:none; border:1px solid var(--line); }
+
+    .surprise{ background:var(--blush-soft); color:var(--plum); }
+    .surprise-btn{ display:none; }
+    .hidden-message{ max-height:none !important; opacity:1 !important; color:var(--plum); }
+
+    .wish-row, .letter-wrap, .surprise{ break-inside:avoid; }
+
+    section{ break-inside:avoid; }
   }
 </style>
 </head>
@@ -531,7 +585,7 @@
       <div class="section-head">
         <div class="kicker">a few moments</div>
         <h2>Some of the shots we love</h2>
-        
+        <p>Drop your favorite photos of Sharissa into the images folder — each frame below will pick them up automatically.</p>
       </div>
 
       <div class="gallery-strip" id="galleryStrip">
@@ -631,6 +685,8 @@
   </footer>
 
 </main>
+
+<button class="print-control" onclick="window.print()" title="Print this page" aria-label="Print this page">🖨 Print to keep</button>
 
 <button class="music-control" id="musicButton" onclick="toggleMusic()" title="Birthday music" aria-label="Toggle birthday music">♪</button>
 
