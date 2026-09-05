@@ -534,6 +534,186 @@
 
     section{ break-inside:avoid; }
   }
+
+  /* =========================================================
+     ROMANTIC TOUCHES (added on top — nothing above this
+     line was changed)
+  ========================================================= */
+
+  /* a warm, barely-there glow across the whole page */
+  body::after{
+    content:"";
+    position:fixed; inset:0;
+    z-index:2;
+    pointer-events:none;
+    background: radial-gradient(circle at 50% 0%, rgba(232,87,140,0.05), transparent 55%),
+                radial-gradient(circle at 100% 100%, rgba(217,166,83,0.06), transparent 60%);
+  }
+
+  @media print{
+    body::after{ display:none; }
+  }
+
+  /* her name gets a soft heartbeat glow */
+  .hero h1 em{
+    animation: nameGlow 3.2s ease-in-out infinite;
+  }
+
+  @keyframes nameGlow{
+    0%, 100%{ text-shadow: 0 0 0 rgba(194,58,99,0); }
+    50%{ text-shadow: 0 12px 32px rgba(194,58,99,0.30); }
+  }
+
+  /* a small pulsing heart after every kicker label */
+  .kicker::after{
+    content:"♥";
+    display:inline-block;
+    color:var(--rose);
+    font-size:.7rem;
+    animation: heartBeat 1.6s ease-in-out infinite;
+  }
+
+  @keyframes heartBeat{
+    0%, 100%{ transform:scale(1); }
+    50%{ transform:scale(1.35); }
+  }
+
+  /* soft rose halo glowing behind her photo */
+  .polaroid::after{
+    content:"";
+    position:absolute;
+    inset:-34px;
+    z-index:-1;
+    border-radius:50%;
+    background: radial-gradient(circle, rgba(232,87,140,0.32), transparent 70%);
+    filter: blur(28px);
+    animation: haloPulse 4.5s ease-in-out infinite;
+  }
+
+  @keyframes haloPulse{
+    0%, 100%{ opacity:.5; transform:scale(1); }
+    50%{ opacity:.85; transform:scale(1.08); }
+  }
+
+  /* a tiny heart ornament between each wish */
+  .wish-row + .wish-row{ position:relative; }
+
+  .wish-row + .wish-row::before{
+    content:"♥";
+    position:absolute;
+    top:0; left:50%;
+    transform:translate(-50%, -50%);
+    background:var(--cream);
+    color:var(--rose);
+    font-size:.65rem;
+    padding:0 10px;
+    line-height:1;
+  }
+
+  /* a faint heart watermark tucked into the letter */
+  .letter-wrap::after{
+    content:"♥";
+    position:absolute;
+    right:26px; bottom:6px;
+    font-family:'Fraunces', serif;
+    font-size:7rem;
+    color:var(--rose);
+    opacity:.05;
+    pointer-events:none;
+  }
+
+  /* a gentle heartbeat ring around the surprise box */
+  .surprise::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    pointer-events:none;
+    animation: ringPulse 2.8s ease-out infinite;
+  }
+
+  @keyframes ringPulse{
+    0%{ box-shadow:0 0 0 0 rgba(255,255,255,.35); }
+    100%{ box-shadow:0 0 0 42px rgba(255,255,255,0); }
+  }
+
+  @media print{
+    .polaroid::after, .surprise::after{ display:none; }
+  }
+
+  /* =========================================================
+     MORE FLOWERS & HEARTS (added on top — nothing above
+     this line was changed)
+  ========================================================= */
+
+  .hero::before{
+    content:"❀";
+    position:absolute;
+    top:60px; left:6px;
+    font-size:2rem;
+    color:var(--blush);
+    opacity:.55;
+    animation: sway 5.5s ease-in-out infinite;
+  }
+
+  .hero::after{
+    content:"❀";
+    position:absolute;
+    bottom:60px; right:10px;
+    font-size:1.7rem;
+    color:var(--gold);
+    opacity:.4;
+    animation: sway 6.5s ease-in-out infinite reverse;
+  }
+
+  @keyframes sway{
+    0%, 100%{ transform:rotate(-8deg) translateY(0); }
+    50%{ transform:rotate(8deg) translateY(-8px); }
+  }
+
+  #letter::before{
+    content:"🌹";
+    position:absolute;
+    top:30px; left:16px;
+    font-size:1.8rem;
+    opacity:.5;
+    animation: sway 7s ease-in-out infinite;
+  }
+
+  #letter::after{
+    content:"🌸";
+    position:absolute;
+    bottom:30px; right:16px;
+    font-size:1.8rem;
+    opacity:.5;
+    animation: sway 6s ease-in-out infinite reverse;
+  }
+
+  .section-head::before{
+    content:"❀";
+    display:block;
+    color:var(--rose);
+    font-size:1.3rem;
+    opacity:.6;
+    margin-bottom:10px;
+  }
+
+  .section-head h2::after{
+    content:" ❀";
+    color:var(--rose);
+    font-size:.6em;
+    vertical-align:middle;
+  }
+
+  footer::before{ content:"🌷 "; }
+  footer::after{ content:" 🌷"; }
+
+  @media print{
+    .hero::before, .hero::after,
+    #letter::before, #letter::after,
+    .section-head::before, .section-head h2::after,
+    footer::before, footer::after{ display:none; content:""; }
+  }
 </style>
 </head>
 <body>
@@ -585,6 +765,7 @@
       <div class="section-head">
         <div class="kicker">a few moments</div>
         <h2>Some of the shots we love</h2>
+        <p>Drop your favorite photos of Sharissa into the images folder — each frame below will pick them up automatically.</p>
       </div>
 
       <div class="gallery-strip" id="galleryStrip">
@@ -773,6 +954,32 @@ function toggleMusic(){
     playMusic();
   }
 }
+</script>
+
+<script>
+/* ==========================================================
+   EXTRA FLOWERS & HEARTS (added on top of the existing
+   floating petals — that script above is unchanged)
+========================================================== */
+(function(){
+  const field = document.getElementById('petalField');
+  const extras = ['🌸','🌷','🌺','💗','💕','💖'];
+
+  function createExtra(){
+    const el = document.createElement('div');
+    el.className = 'petal';
+    el.style.left = Math.random()*100 + 'vw';
+    el.style.fontSize = (14 + Math.random()*20) + 'px';
+    el.style.animationDuration = (12 + Math.random()*14) + 's';
+    el.style.animationDelay = (Math.random()*5) + 's';
+    el.textContent = extras[Math.floor(Math.random()*extras.length)];
+    field.appendChild(el);
+    setTimeout(() => el.remove(), 28000);
+  }
+
+  for(let i=0;i<10;i++) createExtra();
+  setInterval(createExtra, 2200);
+})();
 </script>
 
 </body>
