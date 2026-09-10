@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
   /* =========================================================
@@ -714,6 +715,97 @@
     .section-head::before, .section-head h2::after,
     footer::before, footer::after{ display:none; content:""; }
   }
+
+  /* =========================================================
+     3D LAYER (added on top — nothing above this line
+     was changed)
+  ========================================================= */
+
+  #heart3d{
+    position:fixed; inset:0; z-index:0;
+    pointer-events:none;
+  }
+
+  /* interactive 3D tilt on the hero photo */
+  .hero-photo-side{ perspective:1200px; }
+
+  .polaroid{ transition: transform .1s ease-out; will-change: transform; }
+
+  .polaroid.tilting{ animation:none; }
+
+  /* 3D flip gallery cards */
+  .gallery-strip figure.flip-card{
+    background:none;
+    box-shadow:none;
+    padding:0;
+    perspective:1200px;
+  }
+
+  .flip-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+    transform-style:preserve-3d;
+    transition: transform .9s var(--ease);
+  }
+
+  .flip-card:hover .flip-inner,
+  .flip-card:focus-within .flip-inner{
+    transform: rotateY(180deg);
+  }
+
+  .flip-front, .flip-back{
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+  }
+
+  .flip-front{
+    background:var(--white);
+    padding:10px 10px 34px;
+    box-shadow: var(--shadow-tight);
+    border-radius:3px;
+  }
+
+  .flip-back{
+    position:absolute; inset:0;
+    transform: rotateY(180deg);
+    border-radius:3px;
+    background: linear-gradient(135deg, var(--rose), var(--rose-bright));
+    box-shadow: var(--shadow-tight);
+    color:var(--white);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:8px; text-align:center; padding:16px;
+  }
+
+  .flip-back span{ font-size:2.2rem; }
+
+  .flip-back p{
+    font-family:'Fraunces', serif; font-style:italic; font-size:.95rem;
+  }
+
+  /* gentle 3D scroll reveal, applied via JS to letter / wishes / gallery / surprise */
+  .reveal3d{
+    opacity:0;
+    transform: perspective(1000px) rotateX(10deg) translateY(26px);
+    transition: opacity .8s var(--ease), transform .8s var(--ease);
+  }
+
+  .reveal3d.in-view{
+    opacity:1;
+    transform: perspective(1000px) rotateX(0deg) translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal3d{ opacity:1; transform:none; }
+    .flip-inner{ transition:none; }
+  }
+
+  @media print{
+    #heart3d{ display:none; }
+    .flip-back{ display:none; }
+    .flip-inner{ transform:none !important; }
+    .reveal3d{ opacity:1 !important; transform:none !important; }
+  }
 </style>
 </head>
 <body>
@@ -769,28 +861,48 @@
       </div>
 
       <div class="gallery-strip" id="galleryStrip">
-        <figure>
-          <div class="shot">
-            <img src="2.jpeg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="fallback" style="display:none;">✦</div>
+        <figure class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="shot">
+                <img src="2.jpeg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="fallback" style="display:none;">✦</div>
+              </div>
+            </div>
+            <div class="flip-back"><span>♥</span><p>for you</p></div>
           </div>
         </figure>
-        <figure>
-          <div class="shot">
-            <img src="3.jpeg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="fallback" style="display:none;">✦</div>
+        <figure class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="shot">
+                <img src="3.jpeg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="fallback" style="display:none;">✦</div>
+              </div>
+            </div>
+            <div class="flip-back"><span>♥</span><p>always</p></div>
           </div>
         </figure>
-        <figure>
-          <div class="shot">
-            <img src="4.jpeg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="fallback" style="display:none;">✦</div>
+        <figure class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="shot">
+                <img src="4.jpeg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="fallback" style="display:none;">✦</div>
+              </div>
+            </div>
+            <div class="flip-back"><span>♥</span><p>beautiful</p></div>
           </div>
         </figure>
-        <figure>
-          <div class="shot">
-            <img src="5.jpeg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="fallback" style="display:none;">✦</div>
+        <figure class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <div class="shot">
+                <img src="5.jpeg" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="fallback" style="display:none;">✦</div>
+              </div>
+            </div>
+            <div class="flip-back"><span>♥</span><p>loved</p></div>
           </div>
         </figure>
       </div>
@@ -979,6 +1091,132 @@ function toggleMusic(){
 
   for(let i=0;i<10;i++) createExtra();
   setInterval(createExtra, 2200);
+})();
+</script>
+
+<script>
+/* ==========================================================
+   3D LAYER (added on top of everything above, which is
+   unchanged)
+========================================================== */
+
+/* ---- WebGL floating hearts, behind the page ---- */
+(function(){
+  if(typeof THREE === 'undefined') return;
+
+  const canvas = document.createElement('canvas');
+  canvas.id = 'heart3d';
+  document.body.insertBefore(canvas, document.body.firstChild);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 100);
+  camera.position.z = 18;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  function heartShape(){
+    const s = new THREE.Shape();
+    s.moveTo(0, 0);
+    s.bezierCurveTo(0, -3, -6, -3, -6, 2);
+    s.bezierCurveTo(-6, 5, -3, 7, 0, 10);
+    s.bezierCurveTo(3, 7, 6, 5, 6, 2);
+    s.bezierCurveTo(6, -3, 0, -3, 0, 0);
+    return s;
+  }
+
+  const heartGeo = new THREE.ExtrudeGeometry(heartShape(), {
+    depth:1.4, bevelEnabled:true, bevelThickness:0.4, bevelSize:0.3, bevelSegments:2
+  });
+  heartGeo.scale(0.22, 0.22, 0.22);
+  heartGeo.center();
+
+  const colors = [0xC23A63, 0xE8578C, 0xD9A653, 0xF5D8E1];
+  const hearts = [];
+  const COUNT = window.innerWidth < 700 ? 16 : 32;
+
+  for(let i=0; i<COUNT; i++){
+    const mat = new THREE.MeshStandardMaterial({
+      color: colors[i % colors.length], roughness:0.45, metalness:0.1,
+      transparent:true, opacity:0.85
+    });
+    const mesh = new THREE.Mesh(heartGeo, mat);
+    mesh.position.set((Math.random()-0.5)*26, (Math.random()-0.5)*18, (Math.random()-0.5)*14);
+    mesh.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+    const speed = 0.4 + Math.random()*0.6;
+    const spin = (Math.random()-0.5)*0.01;
+    hearts.push({ mesh, speed, spin });
+    scene.add(mesh);
+  }
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+  const dLight = new THREE.DirectionalLight(0xffffff, 0.55);
+  dLight.position.set(5, 10, 7);
+  scene.add(dLight);
+
+  function animate(){
+    requestAnimationFrame(animate);
+    hearts.forEach(h => {
+      h.mesh.position.y += h.speed*0.012;
+      if(h.mesh.position.y > 10) h.mesh.position.y = -10;
+      h.mesh.rotation.x += h.spin;
+      h.mesh.rotation.y += h.spin;
+    });
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+
+/* ---- interactive 3D tilt on the hero photo ---- */
+(function(){
+  const wrap = document.querySelector('.hero-photo-side');
+  const polaroid = document.querySelector('.polaroid');
+  if(!wrap || !polaroid) return;
+
+  wrap.addEventListener('mousemove', (e) => {
+    const rect = wrap.getBoundingClientRect();
+    const x = (e.clientX - rect.left)/rect.width - 0.5;
+    const y = (e.clientY - rect.top)/rect.height - 0.5;
+    polaroid.classList.add('tilting');
+    polaroid.style.transform =
+      `rotate(-3.5deg) rotateY(${x*20}deg) rotateX(${-y*20}deg) translateZ(10px)`;
+  });
+
+  wrap.addEventListener('mouseleave', () => {
+    polaroid.classList.remove('tilting');
+    polaroid.style.transform = '';
+  });
+})();
+
+/* ---- gentle 3D scroll reveal ---- */
+(function(){
+  const targets = document.querySelectorAll(
+    '.letter-wrap, .wish-row, .gallery-strip figure, .surprise'
+  );
+  targets.forEach(el => el.classList.add('reveal3d'));
+
+  if(!('IntersectionObserver' in window)){
+    targets.forEach(el => el.classList.add('in-view'));
+    return;
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold:0.2 });
+
+  targets.forEach(el => io.observe(el));
 })();
 </script>
 
